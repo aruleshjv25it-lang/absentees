@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Absentees Report</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        #messageBox {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #000;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+<h2>📋 Absentees Report</h2>
+
+<label>Enter Roll Numbers (e.g. 11,25):</label><br>
+<input type="text" id="absenteesInput" placeholder="Enter numbers only">
+<br>
+
+<button onclick="generateList()">Generate List</button>
+<button onclick="copyMessage()">📋 Copy Message</button>
+
+<!-- Message -->
+<div id="messageBox" style="display:none;"></div>
+
+<!-- Table -->
+<table id="resultTable" style="display:none;">
+    <thead>
+        <tr>
+            <th>Full Roll No</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+
+// Student Data
+const students = {
+    "25ITR001": "AAKASH P",
+    "25ITR002": "ABDULHAFEEZ MUHAMED A",
+    "25ITR003": "ABHIRAMI S M",
+    "25ITR004": "ABISHEK B",
+    "25ITR005": "ABISHEK S A",
+    "25ITR006": "ABUBAKKAR SIDDIQ A",
+    "25ITR007": "ADHIRAI M K",
+    "25ITR008": "AISHWARYAGOWRI G U",
+    "25ITR009": "AMIRTHARAKSHANASRI R",
+    "25ITR010": "ANISH KARTHICK R",
+    "25ITR011": "ARULESH J V",
+    "25ITR012": "ASHMITA D",
+    "25ITR013": "ASHWANTH S",
+    "25ITR014": "BALAKRISHNAN R V",
+    "25ITR015": "CHARAN K",
+    "25ITR016": "CHELLAPPAN P",
+    "25ITR017": "DEEPAK M",
+    "25ITR018": "DEEPAK SM",
+    "25ITR019": "DEEPIKA SHRI G",
+    "25ITR020": "DHANASEKAR M",
+    "25ITR021": "DHANUSHREE B M",
+    "25ITR022": "DHANUSUYA B",
+    "25ITR023": "DHARANISH KUMAR N S",
+    "25ITR024": "DHARANYA K",
+    "25ITR025": "DHARSHINI R",
+    "25ITR026": "DHAYA SHREE U",
+    "25ITR027": "DHEEKSHANA K",
+    "25ITR028": "DILIP S T",
+    "25ITR029": "DINESH BABU N",
+    "25ITR031": "DIVYA DHARSHINI R",
+    "25ITR032": "DIVYA S",
+    "25ITR033": "ESAIMOZHI M",
+    "25ITR034": "GOBIKA T",
+    "25ITR035": "GURUSARAN R",
+    "25ITR036": "HANISHA S",
+    "25ITR037": "HARI HARAA SUDHAN S",
+    "25ITR038": "HARIKRISHNAN P",
+    "25ITR039": "HARINEE K R",
+    "25ITR040": "HARINI E",
+    "25ITR041": "HARINI P",
+    "25ITR043": "HARIPRASATH P",
+    "25ITR044": "HARIS S",
+    "25ITR045": "HARITH R",
+    "25ITR046": "HARSHITHA G",
+    "25ITR047": "HEMALATHA S",
+    "25ITR048": "INBARASI E",
+    "25ITR049": "INDU S T",
+    "25ITR050": "INDUSREE K",
+    "25ITR051": "JANANI N T",
+    "25ITR052": "JANANI SREE S",
+    "25ITR053": "JAYAPRANAV J",
+    "25ITR054": "JAYASREE A S",
+    "25ITR055": "JAYAVARMAA S",
+    "25ITR056": "JEEVAN S",
+    "25ITR057": "JEZLIAH MONA R",
+    "25ITR058": "KAMALI S V",
+    "25ITR059": "KAMATCHI PRAVEEN KUMAR K",
+    "25ITR060": "KAMMESHKUMAR K"
+};
+
+let finalMessage = "";
+
+// Generate List
+function generateList() {
+    const input = document.getElementById("absenteesInput").value;
+    const numbers = input.split(",").map(n => n.trim());
+
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+
+    let messageNames = "";
+
+    numbers.forEach(num => {
+        if (!num) return;
+
+        let formattedNum = num.padStart(3, '0');
+        let fullRoll = "25ITR" + formattedNum;
+
+        if (students[fullRoll]) {
+            let row = `<tr>
+                        <td>${fullRoll}</td>
+                        <td>${students[fullRoll]}</td>
+                       </tr>`;
+            tableBody.innerHTML += row;
+
+            messageNames += `👉 ${fullRoll} - ${students[fullRoll]}\n`;
+        }
+    });
+
+    document.getElementById("resultTable").style.display = "table";
+
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString();
+
+    finalMessage = 
+` Dear Parents,
+
+📅 Today's Absentees - ${formattedDate}
+
+${messageNames}
+⚠️ Kindly ensure your ward attends classes regularly.
+
+Thank you 😊`;
+
+    document.getElementById("messageBox").style.display = "block";
+    document.getElementById("messageBox").innerHTML = finalMessage.replace(/\n/g, "<br>");
+}
+
+// Copy Function (100% Working)
+function copyMessage() {
+    if (!finalMessage) {
+        alert("Generate the list first!");
+        return;
+    }
+
+    let temp = document.createElement("textarea");
+    temp.value = finalMessage;
+    document.body.appendChild(temp);
+
+    temp.select();
+    document.execCommand("copy");
+
+    document.body.removeChild(temp);
+
+    alert("✅ Message Copied!");
+}
+
+</script>
+
+</body>
+</html>
