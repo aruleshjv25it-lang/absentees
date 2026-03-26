@@ -98,6 +98,7 @@ const students = {
     "25ITR039": "HARINEE K R",
     "25ITR040": "HARINI E",
     "25ITR041": "HARINI P",
+    "25ITR042": "HARINI SREE L",
     "25ITR043": "HARIPRASATH P",
     "25ITR044": "HARIS S",
     "25ITR045": "HARITH R",
@@ -143,7 +144,7 @@ function generateList() {
                        </tr>`;
             tableBody.innerHTML += row;
 
-            messageNames += `👉 ${fullRoll} - ${students[fullRoll]}\n`;
+            messageNames += ` ${fullRoll} - ${students[fullRoll]}\n`;
         }
     });
 
@@ -155,12 +156,9 @@ function generateList() {
     finalMessage = 
 ` Dear Parents,
 
-📅 Today's Absentees - ${formattedDate}
+ Today's Absentees - ${formattedDate}
 
 ${messageNames}
-⚠️ Kindly ensure your ward attends classes regularly.
-
-Thank you 😊`;
 
     document.getElementById("messageBox").style.display = "block";
     document.getElementById("messageBox").innerHTML = finalMessage.replace(/\n/g, "<br>");
